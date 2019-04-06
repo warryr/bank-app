@@ -3,29 +3,43 @@ const router = express.Router();
 const ObjectId = require('mongodb').ObjectID;
 
 const initializeRouter = (db) => {
-    router.get('/:userId', (req, res) => {
-        db.collection('clients').findOne({'_id': ObjectId(req.params.userId)})
-            .then(function(doc) {
-                res.send(doc)
-            });
-    });
+  router.get('/', (req, res) => {
+    db.collection('clients').aggregate([
+      {
+        $project: {
+          'id': '$_id',
+          'firstName': '$firstName',
+          'lastName': '$lastName',
+          'patrName': '$patrName'
+        }
+      }
+    ]).toArray(function(err, doc) {
+        res.send(doc)
+      });
+  });
 
-    router.post('/', (req, res) => {
-        db.collection('clients').insertOne(req.body, (err, docInserted) => {
-            console.log(docInserted);
-            res.send({id: docInserted.insertedId})
-        });
-    });
+  router.get('/:clientId', (req, res) => {
+    db.collection('clients').findOne({'_id': ObjectId(req.params.clientId)})
+      .then(function(doc) {
+        res.send(doc)
+      });
+  });
 
-    router.delete('/:userId', (req, res) => {
-        db.collection('clients').deleteOne({'_id': ObjectId(req.params.userId)})
-            .then((doc) => {
-                doc.deletedCount === 1 ? res.status(204) : res.status(404);
-                res.send()
-            });
+  router.post('/', (req, res) => {
+    db.collection('clients').insertOne(req.body, (err, docInserted) => {
+      console.log(docInserted);
+      res.send({id: docInserted.insertedId})
     });
+  });
 
-    return router;
+  router.delete('/:clientId', (req, res) => {
+    db.collection('clients').deleteOne({'_id': ObjectId(req.params.clientId)}, (err, doc) => {
+      doc.deletedCount === 1 ? res.status(204) : res.status(404);
+      res.send();
+    })
+  });
+
+  return router;
 };
 
 module.exports = initializeRouter;
