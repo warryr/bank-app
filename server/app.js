@@ -13,7 +13,6 @@ const indexRouter = require('./routes/index');
 const clientsRouterInitializer = require('./routes/clients');
 
 const app = express();
-
 let database;
 
 MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {

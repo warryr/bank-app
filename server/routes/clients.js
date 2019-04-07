@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const ObjectId = require('mongodb').ObjectID;
 
+const jsonParser = express.json();
+
 const initializeRouter = (db) => {
   router.get('/', (req, res) => {
     db.collection('clients').aggregate([
@@ -25,10 +27,11 @@ const initializeRouter = (db) => {
       });
   });
 
-  router.post('/', (req, res) => {
+  router.post('/', jsonParser, (req, res) => {
+    console.log(req.body);
     db.collection('clients').insertOne(req.body, (err, docInserted) => {
       console.log(docInserted);
-      res.send({id: docInserted.insertedId})
+      res.send(docInserted)
     });
   });
 
