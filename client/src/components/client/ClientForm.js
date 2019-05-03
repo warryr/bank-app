@@ -1,9 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { actions } from '../../reducers/ClientReducer';
-import { addClient } from "../../ApiRequests";
+import { addClient } from '../../apiRequests';
+import { createObjectFromInput } from '../../util/domUtil';
 
 class ClientForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onAdd = this.onAdd.bind(this);
+  }
 
   render() {
     return (
@@ -24,9 +29,9 @@ class ClientForm extends React.Component {
 
           <label htmlFor='gender'>Пол</label>
           <select id='gender'>
-            <option value='не указано'>Не выбрано</option>
-            <option value='женский'>Женский</option>
-            <option value='мужской'>Мужской</option>
+            <option value='не выбрано'>не выбрано</option>
+            <option value='женский'>женский</option>
+            <option value='мужской'>мужской</option>
           </select>
 
           <label htmlFor='passportSeries'>Серия паспорта</label>
@@ -70,9 +75,9 @@ class ClientForm extends React.Component {
 
           <label htmlFor='maritalStatus'>Семейное положение</label>
           <select id='maritalStatus'>
-            <option value='не указано'>Не выбрано</option>
-            <option value='женат/замужем'>Женат/замужем</option>
-            <option value='не женат/не замужем'>Не женат/не замужем</option>
+            <option value='не выбрано'>не выбрано</option>
+            <option value='женат/замужем'>женат/замужем</option>
+            <option value='не женат/не замужем'>не женат/не замужем</option>
           </select>
 
           <label htmlFor='citizenship'>Гражданство</label>
@@ -87,7 +92,7 @@ class ClientForm extends React.Component {
           <input id='retiree' type='checkbox' value='true'/>
           <label htmlFor='retiree'>Пенсионер</label>
 
-          <button type='submit' onClick={ClientForm.onAdd}>Добавить</button>
+          <button type='submit' onClick={this.onAdd}>Добавить</button>
         </form>
       </div>
     );
@@ -98,50 +103,48 @@ class ClientForm extends React.Component {
     clientForm.toggleAttribute('hidden');
   }
 
-  static onAdd() {
-    const firstName = getValue('firstName');
-    const lastName = getValue('lastName');
-    const patrName = getValue('patrName');
-    const dateOfBirth = getValue('dateOfBirth');
-    const gender = getValue('gender');
-    const passportSeries = getValue('passportSeries');
-    const passportNumber = getValue('passportNumber');
-    const dateOfIssue = getValue('dateOfIssue');
-    const issuedBy = getValue('issuedBy');
-    const identificationalNumber = getValue('identificationalNumber');
-    const placeOfBirth = getValue('placeOfBirth');
-    const placeOfResidence = getValue('placeOfResidence');
-    const residenceAddress = getValue('residenceAddress');
-    const statPhoneNumber = getValue('statPhoneNumber');
-    const mobPhoneNumber = getValue('mobPhoneNumber');
-    const email = getValue('email');
-    const placeOfRegistration = getValue('placeOfRegistration');
-    const registrationAddress = getValue('registrationAddress');
-    const maritalStatus = getValue('maritalStatus');
-    const citizenship = getValue('citizenship');
-    const monthlyIncome = getValue('monthlyIncome');
-    const invalidElement = document.getElementById('invalid');
-    const invalid = invalidElement.checked ? 'true' : 'false';
-    const retireeElement = document.getElementById('retiree');
-    const retiree = retireeElement.checked ? 'true' : 'false';
+  onAdd() {
+    ClientForm.toggleForm();
 
-    const client = {
-      firstName, lastName, patrName, dateOfBirth, gender, passportSeries, passportNumber,
-      dateOfIssue, issuedBy, identificationalNumber, placeOfBirth, placeOfResidence, residenceAddress,
-      statPhoneNumber, mobPhoneNumber, email, placeOfRegistration, registrationAddress, maritalStatus,
-      citizenship, invalid, retiree, monthlyIncome
+    const map = {
+      'firstName': 'firstName',
+      'lastName': 'lastName',
+      'patrName': 'patrName',
+      'dateOfBirth': 'dateOfBirth',
+      'gender': 'gender',
+      'passportSeries': 'passportSeries',
+      'passportNumber': 'passportNumber',
+      'dateOfIssue': 'dateOfIssue',
+      'issuedBy': 'issuedBy',
+      'identificationalNumber': 'identificationalNumber',
+      'placeOfBirth': 'placeOfBirth',
+      'placeOfResidence': 'placeOfResidence',
+      'residenceAddress': 'residenceAddress',
+      'statPhoneNumber': 'statPhoneNumber',
+      'mobPhoneNumber': 'mobPhoneNumber',
+      'email': 'email',
+      'placeOfRegistration': 'placeOfRegistration',
+      'registrationAddress': 'registrationAddress',
+      'maritalStatus': 'maritalStatus',
+      'citizenship': 'citizenship',
+      'monthlyIncome': 'monthlyIncome'
     };
 
-    ClientForm.toggleForm();
+    const client = createObjectFromInput(map);
+
+    const invalidElement = document.getElementById('invalid');
+    const invalid = !!invalidElement.checked;
+    const retireeElement = document.getElementById('retiree');
+    const retiree = !!retireeElement.checked;
+
+    client.invalid = invalid;
+    client.retiree = retiree;
+
 
     addClient(client)
       .then(newClient => this.props.addClient(newClient));
   }
 }
-
-const getValue = elementId => {
-  return document.getElementById(`${elementId}`).value
-};
 
 const mapStateToProps = state => ({});
 

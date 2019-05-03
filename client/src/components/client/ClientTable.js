@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { actions } from '../../reducers/ClientReducer';
 import ClientTableItem from './ClientTableItem';
-import ClientUpdateItem from './ClientUpdateItem';
-import { getAllClients, deleteClient } from './../../ApiRequests';
+import { getAllClients, deleteClient } from '../../apiRequests';
 
 const ClientTableHead = () => (
   <tr>
@@ -35,11 +34,8 @@ class ClientTable extends React.Component {
           </thead>
           <tbody>
           {this.props.clients.map((client, index) =>
-            client.id === this.props.currentProcessingId ?
-              <ClientUpdateItem key={index} client={client} index={index+1}
-                                save={this.props.saveChanges}/> :
               <ClientTableItem key={index} client={client} index={index+1}
-                               delete={() => this.onDelete(client.id)} update={this.props.updateClient}/>)}
+                               delete={() => this.onDelete(client.id)}/>)}
           </tbody>
         </table>
       </div>
@@ -60,7 +56,6 @@ class ClientTable extends React.Component {
 
 const mapStateToProps = state => ({
   clients: state.clients,
-  currentProcessingId: state.currentProcessingId,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -72,14 +67,6 @@ const mapDispatchToProps = dispatch => ({
     type: actions.DELETE_CLIENT,
     id
   }),
-  updateClient: id => dispatch({
-    type: actions.UPDATE_CLIENT,
-    id
-  }),
-  saveChanges: person => dispatch({
-    type: actions.SAVE_CHANGES,
-    client: person
-  })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClientTable);

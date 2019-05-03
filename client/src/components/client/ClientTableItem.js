@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { VFileMessage as match } from "vfile-message";
 
 export default class ClientTableItem extends React.Component {
   render() {
@@ -10,7 +12,7 @@ export default class ClientTableItem extends React.Component {
         <td>{this.props.client.patrName}</td>
         <td>
           <button onClick={() => this.props.delete(this.props.client.id)}>Удалить</button>
-          <button onClick={() => this.props.update(this.props.client.id)}>Редактировать</button>
+          <Link to={`/clients/${this.props.client.id}`}>Показать полностью</Link>
         </td>
       </tr>
     );

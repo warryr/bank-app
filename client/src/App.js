@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
-import ClientForm from './components/client/ClientForm'
-import ClientTable from './components/client/ClientTable';
+import AllClients from './components/client/AllClients'
+import SingleClient from './components/client/SingleClient';
 
 export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <ClientTable/>
-        <ClientForm/>
+        <Router>
+          <Route path='/clients' exact={true} component={AllClients}/>
+          <Route path='/clients/:id([0-9a-fA-f]{24})' component={SingleClient}/>
+        </Router>
       </div>
     );
   }
