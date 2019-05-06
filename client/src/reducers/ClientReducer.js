@@ -7,9 +7,10 @@ export const actions = {
     DELETE_CLIENT: 'DELETE_CLIENT',
     UPDATE_CURRENT_CLIENT: 'UPDATE_CURRENT_CLIENT',
     SAVE_CHANGES: 'SAVE_CHANGES',
+    SET_CLIENT_VALIDATION: 'SET_CLIENT_VALIDATION',
 };
 
-let reducer = (state={clients: []}, action) => {
+let reducer = (state={clients: [], validation: {}}, action) => {
     switch (action.type) {
         case actions.SET_CLIENTS: {
             return {
@@ -45,6 +46,12 @@ let reducer = (state={clients: []}, action) => {
             return {
                 ...state,
                 clients: state.clients.map(person => person.id === action.client.id ? action.client : person),
+            }
+        }
+        case actions.SET_CLIENT_VALIDATION: {
+            return {
+                ...state,
+                validation: action.validation,
             }
         }
         default: {

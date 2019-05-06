@@ -4,12 +4,18 @@
   "description": "Client side of course project for BSUIR",
   "private": true,
   "dependencies": {
+    "flatpickr": "^4.5.7",
+    "jquery": "^3.4.1",
+    "jquery-ui": "^1.12.1",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-redux": "^6.0.1",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "vfile": "^4.0.0",
+    "vfile-message": "^2.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

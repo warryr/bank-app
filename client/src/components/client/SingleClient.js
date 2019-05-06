@@ -43,7 +43,7 @@ class SingleClient extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  currentClient: state.currentClient ? state.currentClient : {}
+  currentClient: state.currentClient || {}
 });
 
 const mapDispatchToProps = dispatch => ({

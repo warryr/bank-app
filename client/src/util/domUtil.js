@@ -1,27 +1,26 @@
+import $ from 'jquery';
+
 export const getInputValue = elementId => {
   return document.getElementById(`${elementId}`).value;
 };
 
-export const createObjectFromInput = map => {
-  const object = {};
-  for (let key in map) {
-    if (map.hasOwnProperty(key)) {
-      object[key] = getInputValue(map[key]);
-    }
-  }
-  return object;
+export const getSelectValue = elementId => {
+  return $(`#${elementId}`).children('option:selected').val();
 };
 
-export const selectOptionByValue = (select, value) => {
-  const options = select.options;
-  for (let i = 0; i < options.length; i++) {
-    if (value === options[i].value) {
-      return i;
-    }
+export const setFieldsFromInput = (object, list, suffix='') => {
+  for (let field of list) {
+    object[field] = getInputValue(field+suffix);
   }
 };
 
-export const checkIfTrue = (checkbox, bool) => {
+export const setFieldsFromSelect = (object, list, suffix='') => {
+  for (let field of list) {
+    object[field] = getSelectValue(field+suffix);
+  }
+};
+
+export const setCheckedIfTrue = (checkbox, bool) => {
   if (bool) {
     checkbox.setAttribute('checked', '');
   }

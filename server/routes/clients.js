@@ -41,12 +41,12 @@ const initializeRouter = (db) => {
           'issuedBy': 1,
           'identificationalNumber': 1,
           'placeOfBirth': 1,
-          'placeOfResidence': 1,
+          'cityOfResidence': 1,
           'residenceAddress': 1,
           'statPhoneNumber': 1,
           'mobPhoneNumber': 1,
           'email': 1,
-          'placeOfRegistration': 1,
+          'cityOfRegistration': 1,
           'registrationAddress': 1,
           'maritalStatus': 1,
           'citizenship': 1,
@@ -61,8 +61,10 @@ const initializeRouter = (db) => {
   router.post('/', jsonParser, (req, res) => {
     console.log(req.body);
     db.collection('clients').insertOne(req.body, (err, doc) => {
-      console.log(doc);
-      res.send(doc);
+      const client = doc.ops[0];
+      client.id = client._id;
+      delete client._id;
+      res.send(client);
     });
   });
 

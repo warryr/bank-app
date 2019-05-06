@@ -1,10 +1,19 @@
+import $ from 'jquery';
 import React from 'react';
-import { createObjectFromInput } from '../../util/domUtil';
-import { updateClient } from '../../apiRequests';
-import { actions } from '../../reducers/ClientReducer';
+import {setFieldsFromInput, setFieldsFromSelect, setCheckedIfTrue} from '../../util/domUtil';
+import {updateClient} from '../../apiRequests';
+import {actions} from '../../reducers/ClientReducer';
 import connect from 'react-redux/es/connect/connect';
-import { selectOptionByValue } from '../../util/domUtil';
-import { checkIfTrue } from '../../util/domUtil';
+import 'flatpickr/dist/themes/light.css';
+import { listOfInputs, listOfSelects } from './clientFieldsLists';
+import {
+  TableTextInput,
+  TableNumberInput,
+  TableCitySelect,
+  TableMaritalStatusSelect,
+  TableCountrySelect,
+  TableInvalidSelect, TableCheckboxInput
+} from './ClientStatelessComponents';
 
 class SingleClientUpdateInfo extends React.Component {
   constructor(props) {
@@ -13,110 +22,55 @@ class SingleClientUpdateInfo extends React.Component {
   }
 
   render() {
+    const client = this.props.currentClient;
+    const errors = this.props.errors;
     return (
     <div>
       <table>
         <tbody>
+        <TableTextInput id='firstNameUpdated' label='Имя: *' defaultVal={client.firstName} error={errors.firstName}/>
+        <TableTextInput id='lastNameUpdated' label='Фамилия: *' defaultVal={client.lastName} error={errors.lastName}/>
+        <TableTextInput id='patrNameUpdated' label='Отчество: *' defaultVal={client.patrName} error={errors.patrName}/>
+        <TableTextInput id='dateOfBirthUpdated' label='Дата рождения: *' defaultVal={client.dateOfBirth}
+                        error={errors.dateOfBirth}/>
         <tr>
-          <td>Имя: </td>
-          <td><input id='firstNameUpdated' type='text' defaultValue={this.props.currentClient.firstName}/></td>
+          <td>Пол: *</td>
+          <td>
+            <label htmlFor='genderChoice1Updated'>мужской</label>
+            <input id='genderChoice1Updated' name='genderUpdated' type='radio' value='мужской'/>
+            <label htmlFor='genderChoice2Updated'>женский</label>
+            <input id='genderChoice2Updated' name='genderUpdated' type='radio' value='женский'/>
+          </td>
         </tr>
-        <tr>
-          <td>Фамилия: </td>
-          <td><input id='lastNameUpdated' type='text' defaultValue={this.props.currentClient.lastName}/></td>
-        </tr>
-        <tr>
-          <td>Отчество: </td>
-          <td><input id='patrNameUpdated' type='text' defaultValue={this.props.currentClient.patrName}/></td>
-        </tr>
-        <tr>
-          <td>Дата рождения: </td>
-          <td><input id='dateOfBirthUpdated' type='text' defaultValue={this.props.currentClient.dateOfBirth}/></td>
-        </tr>
-        <tr>
-          <td>Пол: </td>
-          <td><select id='genderUpdated'>
-            <option value='не выбрано'>не выбрано</option>
-            <option value='женский'>женский</option>
-            <option value='мужской'>мужской</option>
-          </select></td>
-        </tr>
-        <tr>
-          <td>Серия паспорта: </td>
-          <td><input id='passportSeriesUpdated' type='text' defaultValue={this.props.currentClient.passportSeries}/></td>
-        </tr>
-        <tr>
-          <td>Номер паспорта: </td>
-          <td><input id='passportNumberUpdated' type='text' defaultValue={this.props.currentClient.passportNumber}/></td>
-        </tr>
-        <tr>
-          <td>Дата выдачи: </td>
-          <td><input id='dateOfIssueUpdated' type='text' defaultValue={this.props.currentClient.dateOfIssue}/></td>
-        </tr>
-        <tr>
-          <td>Кем выдан: </td>
-          <td><input id='issuedByUpdated' type='text' defaultValue={this.props.currentClient.issuedBy}/></td>
-        </tr>
-        <tr>
-          <td>Идентификационный номер: </td>
-          <td><input id='identificationalNumberUpdated' type='text' defaultValue={this.props.currentClient.identificationalNumber}/></td>
-        </tr>
-        <tr>
-          <td>Место рождения: </td>
-          <td><input id='placeOfBirthUpdated' type='text' defaultValue={this.props.currentClient.placeOfBirth}/></td>
-        </tr>
-        <tr>
-          <td>Город проживания: </td>
-          <td><input id='placeOfResidenceUpdated' type='text' defaultValue={this.props.currentClient.placeOfResidence}/></td>
-        </tr>
-        <tr>
-          <td>Адрес проживания: </td>
-          <td><input id='residenceAddressUpdated' type='text' defaultValue={this.props.currentClient.residenceAddress}/></td>
-        </tr>
-        <tr>
-          <td>Домашний телефон: </td>
-          <td><input id='statPhoneNumberUpdated' type='text' defaultValue={this.props.currentClient.statPhoneNumber}/></td>
-        </tr>
-        <tr>
-          <td>Мобильный телефон: </td>
-          <td><input id='mobPhoneNumberUpdated' type='text' defaultValue={this.props.currentClient.mobPhoneNumber}/></td>
-        </tr>
-        <tr>
-          <td>Email: </td>
-          <td><input id='emailUpdated' type='email' defaultValue={this.props.currentClient.email}/></td>
-        </tr>
-        <tr>
-          <td>Город прописки: </td>
-          <td><input id='placeOfRegistrationUpdated' type='text' defaultValue={this.props.currentClient.placeOfRegistration}/></td>
-        </tr>
-        <tr>
-          <td>Адрес прописки: </td>
-          <td><input id='registrationAddressUpdated' type='text' defaultValue={this.props.currentClient.registrationAddress}/></td>
-        </tr>
-        <tr>
-          <td>Семейное положение: </td>
-          <td><select id='maritalStatusUpdated'>
-            <option value='не выбрано'>не выбрано</option>
-            <option value='женский'>женский</option>
-            <option value='мужской'>мужской</option>
-          </select></td>
-        </tr>
-        <tr>
-          <td>Гражданство: </td>
-          <td><input id='citizenshipUpdated' type='text' defaultValue={this.props.currentClient.citizenship}/></td>
-        </tr>
-        <tr>
-          <td>Ежемесячный доход: </td>
-          <td><input id='monthlyIncomeUpdated' type='text' defaultValue={this.props.currentClient.monthlyIncome}/></td>
-        </tr>
-        <tr>
-          <td>Имеет инвалидность: </td>
-          <td><input id='invalidUpdated' type='checkbox'/></td>
-        </tr>
-        <tr>
-          <td>Пенсионер: </td>
-          <td><input id='retireeUpdated' type='checkbox'/></td>
-        </tr>
+        <TableTextInput id='passportSeriesUpdated' label='Серия паспорта: *' defaultVal={client.passportSeries}
+                        error={errors.passportSeries}/>
+        <TableTextInput id='passportNumberUpdated' label='Номер паспорта: *' defaultVal={client.passportNumber}
+                        error={errors.passportNumber}/>
+        <TableTextInput id='dateOfIssueUpdated' label='Дата выдачи: *' defaultVal={client.dateOfIssue}
+                        error={errors.dateOfIssue}/>
+        <TableTextInput id='issuedByUpdated' label='Кем выдан: *' defaultVal={client.issuedBy} error={errors.issuedBy}/>
+        <TableTextInput id='identNumberUpdated' label='Идентификационный номер: *'
+                        defaultVal={client.identNumber} error={errors.identNumber}/>
+        <TableTextInput id='placeOfBirthUpdated' label='Место рождения: *' defaultVal={client.placeOfBirth}
+                        error={errors.placeOfBirth}/>
+        <TableCitySelect id='cityOfResidenceUpdated' label='Город проживания: *' error={errors.cityOfResidence}/>
+        <TableTextInput id='residenceAddressUpdated' label='Адрес проживания: *' defaultVal={client.residenceAddress}
+                        error={errors.residenceAddress}/>
+        <TableTextInput id='statPhoneNumberUpdated' label='Домашний телефон: ' defaultVal={client.statPhoneNumber}
+                        error={errors.statPhoneNumber}/>
+        <TableTextInput id='mobPhoneNumberUpdated' label='Мобильный телефон: ' defaultVal={client.mobPhoneNumber}
+                        error={errors.mobPhoneNumber}/>
+        <TableTextInput id='emailUpdated' label='Email: ' defaultVal={client.email}
+                        error={errors.email}/>
+        <TableCitySelect id='cityOfRegistrationUpdated' label='Город проживания: *' error={errors.cityOfRegistration}/>
+        <TableTextInput id='registrationAddressUpdated' label='Адрес прописки: *' defaultVal={client.registrationAddress}
+                        error={errors.registrationAddress}/>
+        <TableMaritalStatusSelect id='maritalStatusUpdated' label='Семейное положение: *' error={errors.maritalStatus}/>
+        <TableCountrySelect id='citizenshipUpdated' label='Гражданство: *' error={errors.citizenship}/>
+        <TableNumberInput id='monthlyIncomeUpdated' label='Ежемесячный доход (BYN): ' min='0'
+                          defaultVal={client.monthlyIncome} error={errors.monthlyIncome}/>
+        <TableInvalidSelect id='invalidUpdated' label='Инвалидность: *' error={errors.invalid}/>
+        <TableCheckboxInput id='retireeUpdated' label='Пенсионер: *'/>
         </tbody>
       </table>
       <button onClick={this.onSave}>Сохранить</button>
@@ -125,50 +79,27 @@ class SingleClientUpdateInfo extends React.Component {
   }
 
   componentDidMount() {
-    const genderUpdated = document.getElementById('genderUpdated');
-    genderUpdated.selectedIndex = selectOptionByValue(genderUpdated, this.props.currentClient.gender);
-    const maritalStatusUpdated = document.getElementById('maritalStatusUpdated');
-    maritalStatusUpdated.selectedIndex = selectOptionByValue(maritalStatusUpdated, this.props.currentClient.maritalStatus)
-    const invalidUpdated = document.getElementById('invalidUpdated');
-    checkIfTrue(invalidUpdated, this.props.currentClient.invalid);
+    document.getElementById('dateOfBirthUpdated').flatpickr();
+    document.getElementById('dateOfIssueUpdated').flatpickr();
+
+    $(`input[name='genderUpdated'][value=${this.props.currentClient.gender}]`).prop('checked', true);
+    $(`#maritalStatusUpdated`).val(`${this.props.currentClient.maritalStatus}`);
+    $(`#cityOfResidenceUpdated`).val(`${this.props.currentClient.cityOfResidence}`);
+    $(`#cityOfRegistrationUpdated`).val(`${this.props.currentClient.cityOfRegistration}`);
+    $(`#citizenshipUpdated`).val(`${this.props.currentClient.citizenship}`);
+    $(`#invalidUpdated`).val(`${this.props.currentClient.invalid}`);
+
     const retireeUpdated = document.getElementById('retireeUpdated');
-    checkIfTrue(retireeUpdated, this.props.currentClient.retiree);
+    setCheckedIfTrue(retireeUpdated, this.props.currentClient.retiree);
   }
 
   onSave() {
-    const map = {
-      'firstName': 'firstNameUpdated',
-      'lastName': 'lastNameUpdated',
-      'patrName': 'patrNameUpdated',
-      'dateOfBirth': 'dateOfBirthUpdated',
-      'gender': 'genderUpdated',
-      'passportSeries': 'passportSeriesUpdated',
-      'passportNumber': 'passportNumberUpdated',
-      'dateOfIssue': 'dateOfIssueUpdated',
-      'issuedBy': 'issuedByUpdated',
-      'identificationalNumber': 'identificationalNumberUpdated',
-      'placeOfBirth': 'placeOfBirthUpdated',
-      'placeOfResidence': 'placeOfResidenceUpdated',
-      'residenceAddress': 'residenceAddressUpdated',
-      'statPhoneNumber': 'statPhoneNumberUpdated',
-      'mobPhoneNumber': 'mobPhoneNumberUpdated',
-      'email': 'emailUpdated',
-      'placeOfRegistration': 'placeOfRegistrationUpdated',
-      'registrationAddress': 'registrationAddressUpdated',
-      'maritalStatus': 'maritalStatusUpdated',
-      'citizenship': 'citizenshipUpdated',
-      'monthlyIncome': 'monthlyIncomeUpdated'
-    };
+    const client = {};
+    setFieldsFromInput(client, listOfInputs,'Updated');
+    setFieldsFromSelect(client, listOfSelects,'Updated');
 
-    const client = createObjectFromInput(map);
-
-    const invalidElement = document.getElementById('invalidUpdated');
-    const invalidUpdated = !!invalidElement.checked;
-    const retireeElement = document.getElementById('retireeUpdated');
-    const retireeUpdated = !!retireeElement.checked;
-
-    client.invalid = invalidUpdated;
-    client.retiree = retireeUpdated;
+    client.gender = $(`input[name='genderUpdated']:checked`).val();
+    client.retiree = !!(document.getElementById('retireeUpdated').checked);
 
     updateClient(client, this.props.currentClient.id)
       .then(updatedClient => {
@@ -179,7 +110,8 @@ class SingleClientUpdateInfo extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  currentClient: state.currentClient ? state.currentClient : {}
+  currentClient: state.currentClient || {},
+  errors: state.validation.errors || {},
 });
 
 const mapDispatchToProps = dispatch => ({

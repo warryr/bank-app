@@ -34,7 +34,7 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
   app.use(express.static(path.join(__dirname, 'public')));
 
   app.use('/', indexRouter);
-  app.use('/clients', clientsRouterInitializer(database));
+  app.use('/api/clients', clientsRouterInitializer(database));
 
 // catch 404 and forward to error handler
   app.use(function(req, res, next) {

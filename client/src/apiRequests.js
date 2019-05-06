@@ -1,5 +1,5 @@
 export const getAllClients = () => {
-  return fetch('/clients/', {method: 'GET'})
+  return fetch('/api/clients/', {method: 'GET'})
     .then(response => response.json())
     .catch(error => {
       console.log(error.message);
@@ -9,7 +9,7 @@ export const getAllClients = () => {
 
 export const addClient = (client) => {
   console.log(client);
-  return fetch(`/clients/`, {
+  return fetch(`/api/clients/`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(client)
@@ -24,7 +24,7 @@ export const addClient = (client) => {
 };
 
 export const deleteClient = (id) => {
-  return fetch(`/clients/${id}/`, {method: 'DELETE'})
+  return fetch(`/api/clients/${id}/`, {method: 'DELETE'})
     .then(response => response.status === 204)
     .catch(error => {
       console.log(error.message);
@@ -33,7 +33,7 @@ export const deleteClient = (id) => {
 };
 
 export const getSingleClient = (id) => {
-  return fetch(`/clients/${id}`, { method: 'GET' })
+  return fetch(`/api/clients/${id}`, { method: 'GET' })
     .then(response => response.json())
     .then(data => data[0])
     .catch(error => {
@@ -43,7 +43,7 @@ export const getSingleClient = (id) => {
 };
 
 export const updateClient = (client, id) => {
-  return fetch(`/clients/${id}`,{
+  return fetch(`/api/clients/${id}`,{
     method: 'PUT',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(client)

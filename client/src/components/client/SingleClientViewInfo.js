@@ -1,4 +1,12 @@
 import React from 'react';
+import {Link} from "react-router-dom";
+
+const TableItem = ({ label, fieldValue }) => (
+  <tr>
+    <td>{label}</td>
+    <td>{fieldValue}</td>
+  </tr>
+);
 
 export default class SingleClientViewInfo extends React.Component {
   render() {
@@ -6,98 +14,29 @@ export default class SingleClientViewInfo extends React.Component {
     <div>
       <table>
         <tbody>
-        <tr>
-          <td>Имя: </td>
-          <td>{this.props.currentClient.firstName}</td>
-        </tr>
-        <tr>
-          <td>Фамилия: </td>
-          <td>{this.props.currentClient.lastName}</td>
-        </tr>
-        <tr>
-          <td>Отчество: </td>
-          <td>{this.props.currentClient.patrName}</td>
-        </tr>
-        <tr>
-          <td>Дата рождения: </td>
-          <td>{this.props.currentClient.dateOfBirth}</td>
-        </tr>
-        <tr>
-          <td>Пол: </td>
-          <td>{this.props.currentClient.gender}</td>
-        </tr>
-        <tr>
-          <td>Серия паспорта: </td>
-          <td>{this.props.currentClient.passportSeries}</td>
-        </tr>
-        <tr>
-          <td>Номер паспорта: </td>
-          <td>{this.props.currentClient.passportNumber}</td>
-        </tr>
-        <tr>
-          <td>Дата выдачи: </td>
-          <td>{this.props.currentClient.dateOfIssue}</td>
-        </tr>
-        <tr>
-          <td>Кем выдан: </td>
-          <td>{this.props.currentClient.issuedBy}</td>
-        </tr>
-        <tr>
-          <td>Идентификационный номер: </td>
-          <td>{this.props.currentClient.identificationalNumber}</td>
-        </tr>
-        <tr>
-          <td>Место рождения: </td>
-          <td>{this.props.currentClient.placeOfBirth}</td>
-        </tr>
-        <tr>
-          <td>Город проживания: </td>
-          <td>{this.props.currentClient.placeOfResidence}</td>
-        </tr>
-        <tr>
-          <td>Адрес проживания: </td>
-          <td>{this.props.currentClient.residenceAddress}</td>
-        </tr>
-        <tr>
-          <td>Домашний телефон: </td>
-          <td>{this.props.currentClient.statPhoneNumber}</td>
-        </tr>
-        <tr>
-          <td>Мобильный телефон: </td>
-          <td>{this.props.currentClient.mobPhoneNumber}</td>
-        </tr>
-        <tr>
-          <td>Email: </td>
-          <td>{this.props.currentClient.email}</td>
-        </tr>
-        <tr>
-          <td>Город прописки: </td>
-          <td>{this.props.currentClient.placeOfRegistration}</td>
-        </tr>
-        <tr>
-          <td>Адрес прописки: </td>
-          <td>{this.props.currentClient.registrationAddress}</td>
-        </tr>
-        <tr>
-          <td>Семейное положение: </td>
-          <td>{this.props.currentClient.maritalStatus}</td>
-        </tr>
-        <tr>
-          <td>Гражданство: </td>
-          <td>{this.props.currentClient.citizenship}</td>
-        </tr>
-        <tr>
-          <td>Ежемесячный доход: </td>
-          <td>{this.props.currentClient.monthlyIncome}</td>
-        </tr>
-        <tr>
-          <td>Имеет инвалидность: </td>
-          <td>{this.props.currentClient.invalid ? 'да' : 'нет'}</td>
-        </tr>
-        <tr>
-          <td>Пенсионер: </td>
-          <td>{this.props.currentClient.retiree ? 'да' : 'нет'}</td>
-        </tr>
+        <TableItem label='Имя: ' fieldValue={this.props.currentClient.firstName}/>
+        <TableItem label='Фамилия: ' fieldValue={this.props.currentClient.lastName}/>
+        <TableItem label='Отчество: ' fieldValue={this.props.currentClient.patrName}/>
+        <TableItem label='Дата рождения: ' fieldValue={this.props.currentClient.dateOfBirth}/>
+        <TableItem label='Пол: ' fieldValue={this.props.currentClient.gender}/>
+        <TableItem label='Серия паспорта: ' fieldValue={this.props.currentClient.passportSeries}/>
+        <TableItem label='Номер паспорта: ' fieldValue={this.props.currentClient.passportNumber}/>
+        <TableItem label='Дата выдачи: ' fieldValue={this.props.currentClient.dateOfIssue}/>
+        <TableItem label='Кем выдан: ' fieldValue={this.props.currentClient.issuedBy}/>
+        <TableItem label='Идентификационный номер: ' fieldValue={this.props.currentClient.identNumber}/>
+        <TableItem label='Место рождения: ' fieldValue={this.props.currentClient.placeOfBirth}/>
+        <TableItem label='Город проживания: ' fieldValue={this.props.currentClient.cityOfResidence}/>
+        <TableItem label='Адрес проживания: ' fieldValue={this.props.currentClient.residenceAddress}/>
+        <TableItem label='Домашний телефон: ' fieldValue={this.props.currentClient.statPhoneNumber}/>
+        <TableItem label='Мобильный телефон: ' fieldValue={this.props.currentClient.mobPhoneNumber}/>
+        <TableItem label='Email: ' fieldValue={this.props.currentClient.email}/>
+        <TableItem label='Город прописки: ' fieldValue={this.props.currentClient.cityOfRegistration}/>
+        <TableItem label='Адрес прописки: ' fieldValue={this.props.currentClient.registrationAddress}/>
+        <TableItem label='Семейное положение: ' fieldValue={this.props.currentClient.maritalStatus}/>
+        <TableItem label='Гражданство: ' fieldValue={this.props.currentClient.citizenship}/>
+        <TableItem label='Ежемесячный доход (BYN): ' fieldValue={this.props.currentClient.monthlyIncome}/>
+        <TableItem label='Инвалидность: ' fieldValue={this.props.currentClient.invalid}/>
+        <TableItem label='Пенсионер: ' fieldValue={this.props.currentClient.retiree ? 'да' : 'нет'}/>
         </tbody>
       </table>
       <button onClick={this.props.update}>Редактировать</button>
