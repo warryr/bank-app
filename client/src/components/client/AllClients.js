@@ -1,5 +1,5 @@
 import React from 'react';
-import ClientTable from './ClientTable';
+import ClientTable from './AllClientsViewInfo';
 import ClientForm from './ClientForm';
 
 export default class AllClients extends React.Component {

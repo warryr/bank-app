@@ -40,6 +40,8 @@ export default class SingleClientViewInfo extends React.Component {
         </tbody>
       </table>
       <button onClick={this.props.update}>Редактировать</button>
+      <Link to={`/clients/${this.props.client.id}/createDeposit`}>Оформить депозит</Link>
+      <Link to={`/clients/${this.props.client.id}/createCredit`}>Оформить кредит</Link>
     </div>
     );
   }
