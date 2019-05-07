@@ -11,6 +11,7 @@ const DATABASE_NAME = "bank-app-db";
 
 const indexRouter = require('./routes/index');
 const clientsRouterInitializer = require('./routes/clients');
+const usersRouterInitializer = require('./routes/users');
 
 const app = express();
 let database;
@@ -22,7 +23,6 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
   database = client.db(DATABASE_NAME);
   console.log("Connected to `" + DATABASE_NAME + "`!");
 
-
 // view engine setup
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'pug');
@@ -33,8 +33,16 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, 'public')));
 
+  app.use((req, res, next) => {
+    res.append('Access-Control-Allow-Origin', ['*']);
+    res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.append('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
+
   app.use('/', indexRouter);
   app.use('/api/clients', clientsRouterInitializer(database));
+  app.use('/api/users', usersRouterInitializer(database));
 
 // catch 404 and forward to error handler
   app.use(function(req, res, next) {
