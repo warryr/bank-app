@@ -18,7 +18,7 @@ export default class SingleClientViewInfo extends React.Component {
         <TableItem label='Фамилия: ' fieldValue={this.props.currentClient.lastName}/>
         <TableItem label='Отчество: ' fieldValue={this.props.currentClient.patrName}/>
         <TableItem label='Дата рождения: ' fieldValue={this.props.currentClient.dateOfBirth}/>
-        <TableItem label='Пол: ' fieldValue={this.props.currentClient.gender}/>
+        <TableItem label='Пол: ' fieldValue={this.props.currentClient.gender ? 'женский' : 'мужской'}/>
         <TableItem label='Серия паспорта: ' fieldValue={this.props.currentClient.passportSeries}/>
         <TableItem label='Номер паспорта: ' fieldValue={this.props.currentClient.passportNumber}/>
         <TableItem label='Дата выдачи: ' fieldValue={this.props.currentClient.dateOfIssue}/>
@@ -40,8 +40,8 @@ export default class SingleClientViewInfo extends React.Component {
         </tbody>
       </table>
       <button onClick={this.props.update}>Редактировать</button>
-      <Link to={`/clients/${this.props.client.id}/createDeposit`}>Оформить депозит</Link>
-      <Link to={`/clients/${this.props.client.id}/createCredit`}>Оформить кредит</Link>
+      <Link to={`/clients/${this.props.currentClient.id}/createDeposit`}>Оформить депозит</Link>
+      <Link to={`/clients/${this.props.currentClient.id}/createCredit`}>Оформить кредит</Link>
     </div>
     );
   }

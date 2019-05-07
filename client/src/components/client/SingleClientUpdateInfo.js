@@ -1,19 +1,19 @@
 import $ from 'jquery';
 import React from 'react';
 import {setFieldsFromInput, setFieldsFromSelect, setCheckedIfTrue} from '../../util/domUtil';
-import {updateClient} from '../../apiRequests';
-import {actions} from '../../reducers/ClientReducer';
+import {updateClient} from '../../apiRequests/clientApiRequests';
+import {actions} from '../../reducers/clientReducer';
 import connect from 'react-redux/es/connect/connect';
 import 'flatpickr/dist/themes/light.css';
 import { listOfInputs, listOfSelects } from './clientFieldsLists';
 import {
-  TableTextInput,
-  TableNumberInput,
   TableCitySelect,
   TableMaritalStatusSelect,
   TableCountrySelect,
-  TableInvalidSelect, TableCheckboxInput
+  TableInvalidSelect,
 } from './ClientStatelessComponents';
+import { CheckboxTableInput, NumberTableInput, TextTableInput } from './../common/StatelessComponents';
+import LoggedOutRedirector from './../common/LoggedOutRedirector';
 
 class SingleClientUpdateInfo extends React.Component {
   constructor(props) {
@@ -28,49 +28,49 @@ class SingleClientUpdateInfo extends React.Component {
     <div>
       <table>
         <tbody>
-        <TableTextInput id='firstNameUpdated' label='Имя: *' defaultVal={client.firstName} error={errors.firstName}/>
-        <TableTextInput id='lastNameUpdated' label='Фамилия: *' defaultVal={client.lastName} error={errors.lastName}/>
-        <TableTextInput id='patrNameUpdated' label='Отчество: *' defaultVal={client.patrName} error={errors.patrName}/>
-        <TableTextInput id='dateOfBirthUpdated' label='Дата рождения: *' defaultVal={client.dateOfBirth}
+        <TextTableInput id='firstNameUpdated' label='Имя: *' defaultVal={client.firstName} error={errors.firstName}/>
+        <TextTableInput id='lastNameUpdated' label='Фамилия: *' defaultVal={client.lastName} error={errors.lastName}/>
+        <TextTableInput id='patrNameUpdated' label='Отчество: *' defaultVal={client.patrName} error={errors.patrName}/>
+        <TextTableInput id='dateOfBirthUpdated' label='Дата рождения: *' defaultVal={client.dateOfBirth}
                         error={errors.dateOfBirth}/>
         <tr>
           <td>Пол: *</td>
           <td>
             <label htmlFor='genderChoice1Updated'>мужской</label>
-            <input id='genderChoice1Updated' name='genderUpdated' type='radio' value='мужской'/>
+            <input id='genderChoice1Updated' name='genderUpdated' type='radio' value='false'/>
             <label htmlFor='genderChoice2Updated'>женский</label>
-            <input id='genderChoice2Updated' name='genderUpdated' type='radio' value='женский'/>
+            <input id='genderChoice2Updated' name='genderUpdated' type='radio' value='true'/>
           </td>
         </tr>
-        <TableTextInput id='passportSeriesUpdated' label='Серия паспорта: *' defaultVal={client.passportSeries}
+        <TextTableInput id='passportSeriesUpdated' label='Серия паспорта: *' defaultVal={client.passportSeries}
                         error={errors.passportSeries}/>
-        <TableTextInput id='passportNumberUpdated' label='Номер паспорта: *' defaultVal={client.passportNumber}
+        <TextTableInput id='passportNumberUpdated' label='Номер паспорта: *' defaultVal={client.passportNumber}
                         error={errors.passportNumber}/>
-        <TableTextInput id='dateOfIssueUpdated' label='Дата выдачи: *' defaultVal={client.dateOfIssue}
+        <TextTableInput id='dateOfIssueUpdated' label='Дата выдачи: *' defaultVal={client.dateOfIssue}
                         error={errors.dateOfIssue}/>
-        <TableTextInput id='issuedByUpdated' label='Кем выдан: *' defaultVal={client.issuedBy} error={errors.issuedBy}/>
-        <TableTextInput id='identNumberUpdated' label='Идентификационный номер: *'
+        <TextTableInput id='issuedByUpdated' label='Кем выдан: *' defaultVal={client.issuedBy} error={errors.issuedBy}/>
+        <TextTableInput id='identNumberUpdated' label='Идентификационный номер: *'
                         defaultVal={client.identNumber} error={errors.identNumber}/>
-        <TableTextInput id='placeOfBirthUpdated' label='Место рождения: *' defaultVal={client.placeOfBirth}
+        <TextTableInput id='placeOfBirthUpdated' label='Место рождения: *' defaultVal={client.placeOfBirth}
                         error={errors.placeOfBirth}/>
         <TableCitySelect id='cityOfResidenceUpdated' label='Город проживания: *' error={errors.cityOfResidence}/>
-        <TableTextInput id='residenceAddressUpdated' label='Адрес проживания: *' defaultVal={client.residenceAddress}
+        <TextTableInput id='residenceAddressUpdated' label='Адрес проживания: *' defaultVal={client.residenceAddress}
                         error={errors.residenceAddress}/>
-        <TableTextInput id='statPhoneNumberUpdated' label='Домашний телефон: ' defaultVal={client.statPhoneNumber}
+        <TextTableInput id='statPhoneNumberUpdated' label='Домашний телефон: ' defaultVal={client.statPhoneNumber}
                         error={errors.statPhoneNumber}/>
-        <TableTextInput id='mobPhoneNumberUpdated' label='Мобильный телефон: ' defaultVal={client.mobPhoneNumber}
+        <TextTableInput id='mobPhoneNumberUpdated' label='Мобильный телефон: ' defaultVal={client.mobPhoneNumber}
                         error={errors.mobPhoneNumber}/>
-        <TableTextInput id='emailUpdated' label='Email: ' defaultVal={client.email}
+        <TextTableInput id='emailUpdated' label='Email: ' defaultVal={client.email}
                         error={errors.email}/>
         <TableCitySelect id='cityOfRegistrationUpdated' label='Город проживания: *' error={errors.cityOfRegistration}/>
-        <TableTextInput id='registrationAddressUpdated' label='Адрес прописки: *' defaultVal={client.registrationAddress}
+        <TextTableInput id='registrationAddressUpdated' label='Адрес прописки: *' defaultVal={client.registrationAddress}
                         error={errors.registrationAddress}/>
         <TableMaritalStatusSelect id='maritalStatusUpdated' label='Семейное положение: *' error={errors.maritalStatus}/>
         <TableCountrySelect id='citizenshipUpdated' label='Гражданство: *' error={errors.citizenship}/>
-        <TableNumberInput id='monthlyIncomeUpdated' label='Ежемесячный доход (BYN): ' min='0'
+        <NumberTableInput id='monthlyIncomeUpdated' label='Ежемесячный доход (BYN): ' min='0'
                           defaultVal={client.monthlyIncome} error={errors.monthlyIncome}/>
         <TableInvalidSelect id='invalidUpdated' label='Инвалидность: *' error={errors.invalid}/>
-        <TableCheckboxInput id='retireeUpdated' label='Пенсионер: *'/>
+        <CheckboxTableInput id='retireeUpdated' label='Пенсионер: *'/>
         </tbody>
       </table>
       <button onClick={this.onSave}>Сохранить</button>
@@ -98,20 +98,21 @@ class SingleClientUpdateInfo extends React.Component {
     setFieldsFromInput(client, listOfInputs,'Updated');
     setFieldsFromSelect(client, listOfSelects,'Updated');
 
-    client.gender = $(`input[name='genderUpdated']:checked`).val();
+    client.gender = !!$(`input[name='genderUpdated']:checked`).val();
     client.retiree = !!(document.getElementById('retireeUpdated').checked);
 
-    updateClient(client, this.props.currentClient.id)
-      .then(updatedClient => {
+    updateClient(client, this.props.currentClient.id,
+      (updatedClient) => {
         this.props.updateCurrentClient(updatedClient);
         this.props.onJobFinish();
-      });
+      },
+      error => console.log(error));
   };
 }
 
 const mapStateToProps = state => ({
-  currentClient: state.currentClient || {},
-  errors: state.validation.errors || {},
+  currentClient: state.client.currentClient || {},
+  errors: state.client.validation.errors || {},
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -121,4 +122,4 @@ const mapDispatchToProps = dispatch => ({
   })
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleClientUpdateInfo);
+export default LoggedOutRedirector(connect(mapStateToProps, mapDispatchToProps)(SingleClientUpdateInfo));

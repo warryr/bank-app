@@ -1,22 +1,16 @@
 import $ from 'jquery';
 import React from 'react';
 import { connect } from 'react-redux';
-import { actions } from '../../reducers/ClientReducer';
-import { addClient } from '../../apiRequests';
-import { setFieldsFromInput, setFieldsFromSelect } from '../../util/domUtil';
+import { actions } from '../../reducers/clientReducer';
+import { addClient } from '../../apiRequests/clientApiRequests';
+import { setFieldsFromInput, setFieldsFromSelect } from './../../util/domUtil';
 import flatpickr from 'flatpickr';                                //не работает без этого импорта
 import 'flatpickr/dist/themes/light.css';
 import validate from './clientValidator';
 import { listOfInputs, listOfSelects } from './clientFieldsLists';
-import {
-  TextInput,
-  MaritalStatusSelect,
-  CountrySelect,
-  CitySelect,
-  InvalidSelect,
-  NumberInput,
-  CheckboxInput
-} from './ClientStatelessComponents';
+import { MaritalStatusSelect, CountrySelect, CitySelect, InvalidSelect } from './ClientStatelessComponents';
+import { CheckboxInput, NumberInput, TextInput } from './../common/StatelessComponents';
+import LoggedOutRedirector from './../common/LoggedOutRedirector';
 
 class ClientForm extends React.Component {
   constructor(props) {
@@ -37,9 +31,9 @@ class ClientForm extends React.Component {
 
           <label htmlFor='gender'>Пол *</label>
           <label htmlFor='genderChoice1'>мужской</label>
-          <input type='radio' id='genderChoice1' name='gender' value='мужской'/>
+          <input type='radio' id='genderChoice1' name='gender' value='false'/>
           <label htmlFor='genderChoice2'>женский</label>
-          <input type='radio' id='genderChoice2' name='gender' value='женский' checked/>
+          <input type='radio' id='genderChoice2' name='gender' value='true' checked/>
 
           <TextInput id='passportSeries' label='Серия паспорта *' error={errors.passportSeries}/>
           <TextInput id='passportNumber' label='Номер паспорта *' error={errors.passportNumber}/>
@@ -83,8 +77,8 @@ class ClientForm extends React.Component {
     setFieldsFromInput(client, listOfInputs);
     setFieldsFromSelect(client, listOfSelects);
 
-    client.gender = $(`input[name='gender']:checked`).val();
-    client.retiree = !!(document.getElementById('retiree').checked);
+    client.gender = !!$(`input[name='gender']:checked`).val();
+    client.retiree = !!document.getElementById('retiree').checked;
 
     let valid = validate(client, this.props.setValidation);
 
@@ -93,18 +87,14 @@ class ClientForm extends React.Component {
 
       client.monthlyIncome = parseInt(client.monthlyIncome, 10);
 
-      addClient(client)
-        .then(newClient => {
-          console.log(newClient);
-          this.props.addClient(newClient)
-        });
+      addClient(client, this.props.addClient, error => console.log(error));
     }
 
   }
 }
 
 const mapStateToProps = state => ({
-  errors: state.validation.errors || {},
+  errors: state.client.validation.errors || {},
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -122,4 +112,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClientForm);
+export default LoggedOutRedirector(connect(mapStateToProps, mapDispatchToProps)(ClientForm));

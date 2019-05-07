@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const ObjectId = require('mongodb').ObjectID;
+const { tryAuthorize } = require('../util/authUtil');
 
 const jsonParser = express.json();
 
 const initializeRouter = (db) => {
   router.get('/', (req, res) => {
+    if (!tryAuthorize(req, res)) {
+      return;
+    }
     db.collection('clients').aggregate([
       {
         $project: {
@@ -20,6 +24,9 @@ const initializeRouter = (db) => {
   });
 
   router.get('/:clientId', (req, res) => {
+    if (!tryAuthorize(req, res)) {
+      return;
+    }
     db.collection('clients').aggregate([
       {
         $match: {
@@ -59,7 +66,9 @@ const initializeRouter = (db) => {
   });
 
   router.post('/', jsonParser, (req, res) => {
-    console.log(req.body);
+    if (!tryAuthorize(req, res)) {
+      return;
+    }
     db.collection('clients').insertOne(req.body, (err, doc) => {
       const client = doc.ops[0];
       client.id = client._id;
@@ -69,6 +78,9 @@ const initializeRouter = (db) => {
   });
 
   router.delete('/:clientId', (req, res) => {
+    if (!tryAuthorize(req, res)) {
+      return;
+    }
     db.collection('clients').deleteOne({'_id': ObjectId(req.params.clientId)}, (err, doc) => {
       doc.deletedCount === 1 ? res.status(204) : res.status(404);
       res.send();
@@ -76,6 +88,9 @@ const initializeRouter = (db) => {
   });
 
   router.put('/:clientId', (req, res) => {
+    if (!tryAuthorize(req, res)) {
+      return;
+    }
     db.collection('clients').findOneAndUpdate(
         {'_id': ObjectId(req.params.clientId)},
         { $set: req.body },

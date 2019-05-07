@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { actions } from '../../reducers/ClientReducer';
-import { getSingleClient } from '../../apiRequests';
+import { actions } from '../../reducers/clientReducer';
+import { getSingleClient } from '../../apiRequests/clientApiRequests';
 import SingleClientViewInfo from './SingleClientViewInfo';
 import SingleClientUpdateInfo from './SingleClientUpdateInfo';
+import LoggedOutRedirector from './../common/LoggedOutRedirector';
 
 class SingleClient extends React.Component {
   constructor(props) {
@@ -17,8 +18,7 @@ class SingleClient extends React.Component {
     const href = window.location.href;
     const currentId = href.substr(href.lastIndexOf('/') + 1);
 
-    getSingleClient(currentId)
-      .then(client => this.props.addCurrentClient(client));
+    getSingleClient(currentId, this.props.addCurrentClient);
   }
 
   render() {
@@ -43,14 +43,14 @@ class SingleClient extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  currentClient: state.currentClient || {}
+  currentClient: state.client.currentClient || {}
 });
 
 const mapDispatchToProps = dispatch => ({
   addCurrentClient: client => dispatch({
-    type: actions.ADD_CURRENT_CLIENT,
+    type: actions.SET_CURRENT_CLIENT,
     client
   }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleClient);
+export default LoggedOutRedirector(connect(mapStateToProps, mapDispatchToProps)(SingleClient));

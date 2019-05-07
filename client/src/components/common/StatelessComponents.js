@@ -1,9 +1,9 @@
 import React from 'react';
 
-export const Input = ({ id, label, type, error }) => (
+export const Input = ({ id, label, type, error, ...args }) => (
   <div>
     <label htmlFor={id}>{label}</label>
-    <input id={id} type={type}/>
+    <input id={id} type={type} {...args}/>
     <p>{error}</p>
   </div>
 );
@@ -38,4 +38,28 @@ export const TableSelect = ({ id, label, options, error }) => (
     </select></td>
     <td>{error}</td>
   </tr>
+);
+
+export const TextInput = ({ ...args }) => (
+  <Input type='text' {...args}/>
+);
+
+export const NumberInput = ({ ...args }) => (
+  <Input type='number' {...args}/>
+);
+
+export const CheckboxInput = ({ ...args }) => (
+  <Input itype='checkbox' {...args}/>
+);
+
+export const TextTableInput = ({ ...args }) => (
+  <TableInput type='text' {...args}/>
+);
+
+export const NumberTableInput = ({ args }) => (
+  <TableInput type='number' {...args}/>
+);
+
+export const CheckboxTableInput = ({ ...args }) => (
+  <TableInput type='text' {...args}/>
 );

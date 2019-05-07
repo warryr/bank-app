@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { actions } from '../../reducers/ClientReducer';
+import { actions } from '../../reducers/clientReducer';
 import AllClientsViewInfoItem from './AllClientsViewInfoItem';
-import { getAllClients, deleteClient } from '../../apiRequests';
+import { getAllClients, deleteClient } from '../../apiRequests/clientApiRequests';
+import LoggedOutRedirector from './../common/LoggedOutRedirector';
 
 const ClientTableHead = () => (
   <tr>
@@ -21,8 +22,7 @@ class AllClientsViewInfo extends React.Component {
   }
 
   componentWillMount() {
-    getAllClients()
-      .then(clients => this.props.setClients(clients));
+    getAllClients(this.props.setClients, error => console.log(error));
   }
 
   render() {
@@ -43,19 +43,12 @@ class AllClientsViewInfo extends React.Component {
   }
 
   onDelete(id) {
-    deleteClient(id)
-      .then(result => {
-        if (result) {
-          this.props.deleteClient(id);
-        } else {
-          console.log('You tried to delete someone who doesn\'t exist!!');
-        }
-      });
+    deleteClient(id, id => this.props.deleteClient(id), error => console.log(error));
   }
 }
 
 const mapStateToProps = state => ({
-  clients: state.clients,
+  clients: state.client.clients,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -69,4 +62,4 @@ const mapDispatchToProps = dispatch => ({
   }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllClientsViewInfo);
+export default LoggedOutRedirector(connect(mapStateToProps, mapDispatchToProps)(AllClientsViewInfo));
