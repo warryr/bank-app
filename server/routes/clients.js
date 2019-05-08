@@ -46,7 +46,7 @@ const initializeRouter = (db) => {
           'passportNumber': 1,
           'dateOfIssue': 1,
           'issuedBy': 1,
-          'identificationalNumber': 1,
+          'identNumber': 1,
           'placeOfBirth': 1,
           'cityOfResidence': 1,
           'residenceAddress': 1,

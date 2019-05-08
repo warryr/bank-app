@@ -19,7 +19,7 @@ const getValidationRules = client => [
   () => requiredField(client.identNumber, 'identNumber', fieldPattern, /^\d{7}[A-Za-z]\d{3}[A-Za-z]{2}\d$/),
   () => requiredField(client.placeOfBirth, 'placeOfBirth', textFieldLength, 2, 50),
   () => fieldPattern(client.statPhoneNumber, 'statPhoneNumber', /^\d{7}$/),
-  () => fieldPattern(client.mobPhoneNumber, 'mobPhoneNumber', /^\(\d{2}\)\d{7}$/),
+  () => fieldPattern(client.mobPhoneNumber, 'mobPhoneNumber', /^\+375\(\d{2}\)\d{7}$/),
   () => fieldPattern(client.email, 'email', /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/),
   () => requiredField(client.residenceAddress, 'residenceAddress', textFieldLength, 1, 50),
   () => requiredField(client.registrationAddress, 'registrationAddress', textFieldLength, 1, 50),

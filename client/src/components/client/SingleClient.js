@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { actions } from '../../reducers/clientReducer';
+import { clientActions } from '../../reducers/clientReducer';
 import { getSingleClient } from '../../apiRequests/clientApiRequests';
 import SingleClientViewInfo from './SingleClientViewInfo';
 import SingleClientUpdateInfo from './SingleClientUpdateInfo';
@@ -48,7 +48,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addCurrentClient: client => dispatch({
-    type: actions.SET_CURRENT_CLIENT,
+    type: clientActions.SET_CURRENT_CLIENT,
     client
   }),
 });

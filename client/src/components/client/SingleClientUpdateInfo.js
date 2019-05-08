@@ -2,7 +2,7 @@ import $ from 'jquery';
 import React from 'react';
 import {setFieldsFromInput, setFieldsFromSelect, setCheckedIfTrue} from '../../util/domUtil';
 import {updateClient} from '../../apiRequests/clientApiRequests';
-import {actions} from '../../reducers/clientReducer';
+import {clientActions} from '../../reducers/clientReducer';
 import connect from 'react-redux/es/connect/connect';
 import 'flatpickr/dist/themes/light.css';
 import { listOfInputs, listOfSelects } from './clientFieldsLists';
@@ -14,18 +14,20 @@ import {
 } from './ClientStatelessComponents';
 import { CheckboxTableInput, NumberTableInput, TextTableInput } from './../common/StatelessComponents';
 import LoggedOutRedirector from './../common/LoggedOutRedirector';
+import validate from './clientValidator';
 
 class SingleClientUpdateInfo extends React.Component {
   constructor(props) {
     super(props);
     this.onSave = this.onSave.bind(this);
+    this.onCancel = this.onCancel.bind(this);
   }
 
   render() {
     const client = this.props.currentClient;
     const errors = this.props.errors;
     return (
-    <div>
+    <div className='view-info'>
       <table>
         <tbody>
         <TextTableInput id='firstNameUpdated' label='Имя: *' defaultVal={client.firstName} error={errors.firstName}/>
@@ -73,7 +75,8 @@ class SingleClientUpdateInfo extends React.Component {
         <CheckboxTableInput id='retireeUpdated' label='Пенсионер: *'/>
         </tbody>
       </table>
-      <button onClick={this.onSave}>Сохранить</button>
+      <button className='btn btn-light btn-form' onClick={this.onCancel}>Отменить</button>
+      <button className='btn btn-light btn-form' onClick={this.onSave}>Сохранить</button>
     </div>
     );
   }
@@ -93,6 +96,10 @@ class SingleClientUpdateInfo extends React.Component {
     setCheckedIfTrue(retireeUpdated, this.props.currentClient.retiree);
   }
 
+  onCancel() {
+    this.props.onJobFinish();
+  }
+
   onSave() {
     const client = {};
     setFieldsFromInput(client, listOfInputs,'Updated');
@@ -101,12 +108,16 @@ class SingleClientUpdateInfo extends React.Component {
     client.gender = !!$(`input[name='genderUpdated']:checked`).val();
     client.retiree = !!(document.getElementById('retireeUpdated').checked);
 
-    updateClient(client, this.props.currentClient.id,
-      (updatedClient) => {
-        this.props.updateCurrentClient(updatedClient);
-        this.props.onJobFinish();
-      },
-      error => console.log(error));
+    let valid = validate(client, this.props.setValidation);
+
+    if (valid) {
+      updateClient(client, this.props.currentClient.id,
+        (updatedClient) => {
+          this.props.updateCurrentClient(updatedClient);
+          this.props.onJobFinish();
+        },
+        error => console.log(error));
+    }
   };
 }
 
@@ -116,10 +127,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateCurrentClient: client => dispatch({
-    type: actions.UPDATE_CURRENT_CLIENT,
+  updateCurrentClient: client =>
+    dispatch({
+    type: clientActions.UPDATE_CURRENT_CLIENT,
     client
-  })
+  }),
+  setValidation: validation =>
+    dispatch({
+      type: clientActions.SET_CLIENT_VALIDATION,
+      validation
+    })
 });
 
 export default LoggedOutRedirector(connect(mapStateToProps, mapDispatchToProps)(SingleClientUpdateInfo));
