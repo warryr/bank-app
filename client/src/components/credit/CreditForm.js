@@ -16,14 +16,14 @@ class CreditForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='view-info'>
         <form>
           <Select id='creditType' label='Вид кредита *' options={creditTypes}/>
           <Select id='creditCurrency' label='Валюта кредита' options={currency}/>
           <NumberInput id='creditTerm' label='Срок кредита' min='1'/>
           <NumberInput id='creditAmount' label='Сумма кредита' min='100'/>
           <NumberInput id='creditPercent' label='Процент по кредиту' min='1'/>
-          <button>Оформить</button>
+          <button className='btn btn-light'>Оформить</button>
         </form>
       </div>
     );

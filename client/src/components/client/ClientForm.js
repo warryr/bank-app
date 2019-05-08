@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import React from 'react';
 import { connect } from 'react-redux';
-import { actions } from '../../reducers/clientReducer';
+import { clientActions } from '../../reducers/clientReducer';
 import { addClient } from '../../apiRequests/clientApiRequests';
 import { setFieldsFromInput, setFieldsFromSelect } from './../../util/domUtil';
 import flatpickr from 'flatpickr';                                //не работает без этого импорта
@@ -22,7 +22,7 @@ class ClientForm extends React.Component {
     const errors = this.props.errors;
     return (
       <div>
-        <button id='showForm' onClick={ClientForm.toggleForm}>Добавить клиента</button>
+        <button id='showForm' className='btn btn-light' onClick={ClientForm.toggleForm}>Добавить клиента</button>
         <form id='clientForm' hidden>
           <TextInput id='firstName' label='Имя *' error={errors.firstName}/>
           <TextInput id='lastName' label='Фамилия *' error={errors.lastName}/>
@@ -52,8 +52,8 @@ class ClientForm extends React.Component {
           <CountrySelect id='citizenship' label='Гражданство *' error={errors.citizenship}/>
           <NumberInput id='monthlyIncome' label='Ежемесячный доход (BYN)' min='1' error={errors.monthlyIncome}/>
           <InvalidSelect id='invalid' label='Инвалидность *' error={errors.invalid}/>
-          <CheckboxInput id='retiree' label='Пенсионер *'/>
-          <button type='button' onClick={this.onAdd}>Добавить</button>
+          <CheckboxInput id='retiree' label='Пенсионер '/>
+          <button type='button' className='btn btn-light btn-form' onClick={this.onAdd}>Добавить</button>
         </form>
       </div>
     );
@@ -84,8 +84,9 @@ class ClientForm extends React.Component {
 
     if (valid) {
       ClientForm.toggleForm();
+      $('form').find('input, select').val('');
 
-      client.monthlyIncome = parseInt(client.monthlyIncome, 10);
+      client.monthlyIncome = parseInt(client.monthlyIncome);
 
       addClient(client, this.props.addClient, error => console.log(error));
     }
@@ -98,18 +99,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addClient: client => {
+  addClient: client =>
     dispatch({
-      type: actions.ADD_CLIENT,
+      type: clientActions.ADD_CLIENT,
       client
-    })
-  },
-  setValidation: validation => {
+    }),
+  setValidation: validation =>
     dispatch({
-      type: actions.SET_CLIENT_VALIDATION,
+      type: clientActions.SET_CLIENT_VALIDATION,
       validation
     })
-  }
 });
 
 export default LoggedOutRedirector(connect(mapStateToProps, mapDispatchToProps)(ClientForm));

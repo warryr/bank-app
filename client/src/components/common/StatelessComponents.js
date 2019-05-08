@@ -49,17 +49,17 @@ export const NumberInput = ({ ...args }) => (
 );
 
 export const CheckboxInput = ({ ...args }) => (
-  <Input itype='checkbox' {...args}/>
+  <Input type='checkbox' {...args}/>
 );
 
 export const TextTableInput = ({ ...args }) => (
   <TableInput type='text' {...args}/>
 );
 
-export const NumberTableInput = ({ args }) => (
-  <TableInput type='number' {...args}/>
+export const NumberTableInput = ({ min, ...args }) => (
+  <TableInput type='number' min={min} {...args}/>
 );
 
 export const CheckboxTableInput = ({ ...args }) => (
-  <TableInput type='text' {...args}/>
+  <TableInput type='checkbox' {...args}/>
 );

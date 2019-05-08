@@ -13,14 +13,14 @@ class DepositForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='view-info'>
         <form>
           <Select id='depositType' label='Вид депозита *' options={depositTypes}/>
           <Select id='depositCurrency' label='Валюта депозита' options={currency}/>
           <NumberInput id='depositTerm' label='Срок депозита' min='1'/>
           <NumberInput id='depositAmount' label='Сумма депозита' min='100'/>
           <NumberInput id='depositPercent' label='Процент по депозиту' min='1'/>
-          <button>Оформить</button>
+          <button className='btn btn-light'>Оформить</button>
         </form>
       </div>
     );

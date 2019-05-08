@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { actions } from '../../reducers/clientReducer';
+import { clientActions } from '../../reducers/clientReducer';
 import AllClientsViewInfoItem from './AllClientsViewInfoItem';
 import { getAllClients, deleteClient } from '../../apiRequests/clientApiRequests';
 import LoggedOutRedirector from './../common/LoggedOutRedirector';
@@ -27,7 +27,7 @@ class AllClientsViewInfo extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='view-info'>
         <table>
           <thead>
           <ClientTableHead/>
@@ -53,11 +53,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setClients: clients => dispatch({
-    type: actions.SET_CLIENTS,
+    type: clientActions.SET_CLIENTS,
     clients
   }),
   deleteClient: id => dispatch({
-    type: actions.DELETE_CLIENT,
+    type: clientActions.DELETE_CLIENT,
     id
   }),
 });

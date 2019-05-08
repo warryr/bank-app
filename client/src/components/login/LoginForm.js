@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { setFieldsFromInput } from './../../util/domUtil';
 import { connect } from 'react-redux';
 import { login } from '../../apiRequests/userApiRequests';
-import { actions } from '../../reducers/userReducer';
+import { userActions } from '../../reducers/userReducer';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class LoginForm extends React.Component {
         <label htmlFor='password'>Пароль</label>
         <input id='password' type='password'/>
         <p id='serverError' hidden>Неправильное имя пользователя или пароль</p>
-        <button type='button' onClick={this.onLogin}>Войти</button>
+        <button type='button' className='btn btn-light btn-form' onClick={this.onLogin}>Войти</button>
       </form>
     );
   }
@@ -33,8 +33,8 @@ class LoginForm extends React.Component {
     login(user, this.onSuccess, this.onFail);
   }
 
-  onSuccess(object) {
-    this.props.saveToken(object.token);
+  onSuccess(object, username) {
+    this.props.saveToken(object.token, username);
     $('#serverError').attr('hidden', '');
   }
 
@@ -48,9 +48,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  saveToken: token => {
+  saveToken: (token, username) => {
     dispatch({
-      type: actions.SAVE_TOKEN,
+      type: userActions.LOG_IN,
+      username,
       token
     })
   },

@@ -1,6 +1,6 @@
 import decorator from '../util/logger';
 
-export const actions = {
+export const depositActions = {
   ADD_DEPOSIT: 'ADD_DEPOSIT',
   UPDATE_DEPOSIT: 'UPDATE_DEPOSIT',
   SAVE_DEPOSIT_CHANGES: 'SAVE_DEPOSIT_CHANGES',
@@ -9,7 +9,7 @@ export const actions = {
 
 let reducer = (state={}, action) => {
   switch (action.type) {
-    case actions.ADD_DEPOSIT: {
+    case depositActions.ADD_DEPOSIT: {
       return
     }
     default: {

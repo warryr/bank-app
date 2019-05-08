@@ -2,8 +2,8 @@ import decorator from '../util/logger';
 
 //TODO: validation for login and password
 
-export const actions = {
-  SAVE_TOKEN: 'SAVE_TOKEN',
+export const userActions = {
+  LOG_IN: 'LOG_IN',
   LOG_OUT: 'LOG_OUT',
   SET_USER_VALIDATION: 'SET_USER_VALIDATION',
   SET_SERVER_ERROR: 'SET_SERVER_ERROR',
@@ -11,22 +11,24 @@ export const actions = {
 
 let reducer = (state={currentToken: ''}, action) => {
   switch (action.type) {
-    case actions.SAVE_TOKEN: {
+    case userActions.LOG_IN: {
       return {
         ...state,
+        currentUser: action.username,
         currentToken: action.token,
       }
     }
-    case actions.LOG_OUT: {
+    case userActions.LOG_OUT: {
       return {
         ...state,
+        currentUser: '',
         currentToken: '',
       }
     }
-    case actions.SET_USER_VALIDATION: {
+    case userActions.SET_USER_VALIDATION: {
       return
     }
-    case actions.SET_SERVER_ERROR: {
+    case userActions.SET_SERVER_ERROR: {
       return {
         serverError: action.error,
       }

@@ -1,11 +1,11 @@
 import { store } from '../reducers/store';
-import { actions } from '../reducers/userReducer';
+import { userActions } from '../reducers/userReducer';
 
 const getToken = () => store.getState().user.currentToken;
 
 const tokenExpired = response => {
   if (response.status === 401) {
-    store.dispatch({type: actions.LOG_OUT});
+    store.dispatch({type: userActions.LOG_OUT});
     return true;
   }
   return false;
