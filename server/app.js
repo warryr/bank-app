@@ -12,6 +12,7 @@ const DATABASE_NAME = "bank-app-db";
 const indexRouter = require('./routes/index');
 const clientsRouterInitializer = require('./routes/clients');
 const usersRouterInitializer = require('./routes/users');
+const depositsRouterInitializer = require('./routes/deposits');
 
 const app = express();
 let database;
@@ -43,6 +44,7 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
   app.use('/', indexRouter);
   app.use('/api/clients', clientsRouterInitializer(database));
   app.use('/api/users', usersRouterInitializer(database));
+  app.use('/api/deposits', depositsRouterInitializer(database));
 
 // catch 404 and forward to error handler
   app.use(function(req, res, next) {

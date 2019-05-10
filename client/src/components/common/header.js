@@ -20,7 +20,10 @@ class Header extends React.Component {
                 <Link className="nav-link" to="/clients">Клиенты</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/entries">Проводки</Link>
+                <Link className="nav-link" to="/deposits">Отчет по депозитам</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/credits">Отчет по кредитам</Link>
               </li>
             </ul>
 

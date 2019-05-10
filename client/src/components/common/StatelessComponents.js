@@ -8,15 +8,14 @@ export const Input = ({ id, label, type, error, ...args }) => (
   </div>
 );
 
-export const Select = ({ id, label, options, error }) => (
+export const Select = ({ id, label, options, ...args }) => (
   <div>
     <label htmlFor={id}>{label}</label>
-    <select id={id} placeholder='не выбрано'>
+    <select id={id} placeholder='не выбрано' {...args}>
       {options.map((option, key) =>
         <option key={key}>{option}</option>
       )}
     </select>
-    <p>{error}</p>
   </div>
 );
 

@@ -12,7 +12,7 @@ const tokenExpired = response => {
 };
 
 export const getAllClients = (resolve, reject) => {
-  return fetch('/api/clients/', {
+  fetch('/api/clients/', {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${getToken()}`
@@ -34,7 +34,6 @@ export const getAllClients = (resolve, reject) => {
 };
 
 export const addClient = (client, resolve, reject) => {
-  console.log(client);
   fetch(`/api/clients/`, {
     method: 'POST',
     headers: {
@@ -57,7 +56,7 @@ export const addClient = (client, resolve, reject) => {
 };
 
 export const deleteClient = (id, resolve, reject) => {
-  return fetch(`/api/clients/${id}/`, {
+  fetch(`/api/clients/${id}/`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${getToken()}`
@@ -79,7 +78,7 @@ export const deleteClient = (id, resolve, reject) => {
 };
 
 export const getSingleClient = (id, resolve, reject) => {
-  return fetch(`/api/clients/${id}`, {
+  fetch(`/api/clients/${id}`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${getToken()}`
@@ -101,7 +100,7 @@ export const getSingleClient = (id, resolve, reject) => {
 };
 
 export const updateClient = (client, id, resolve, reject) => {
-  return fetch(`/api/clients/${id}`,{
+  fetch(`/api/clients/${id}`,{
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

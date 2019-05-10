@@ -7,7 +7,7 @@ import LoggedOutRedirector from './../common/LoggedOutRedirector';
 
 const ClientTableHead = () => (
   <tr>
-    <th>ID</th>
+    <th>№</th>
     <th>Имя</th>
     <th>Фамилия</th>
     <th>Отчество</th>
