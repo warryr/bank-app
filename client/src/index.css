@@ -42,18 +42,48 @@ input[type=checkbox] {
   padding-left: 0;
 }
 
-.btn {
-  padding: 8px 20px;
-  margin: 0 10px;
+table.entries, th.entries, td.entries {
+  border: 1px solid black;
 }
 
-.btn-form {
-  padding: 12px 20px;
+table.entries {
+  width: 80%;
   margin: 20px;
-  cursor: pointer;
-  float: right;
+  border-collapse: collapse;
+}
+
+table.deposits {
+  width: 110%;
+  margin: 10px 0 20px;
+  text-align: center;
 }
 
 .view-info {
   margin-top: 80px;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.simple-button {
+  padding: 8px 20px;
+}
+
+.form-button {
+  padding: 12px 20px;
+  margin: 20px;
+  cursor: pointer;
+}
+
+.info-title {
+  margin: 40px;
+}
+
+.hidden{
+  display: none;
 }

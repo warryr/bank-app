@@ -53,7 +53,7 @@ class ClientForm extends React.Component {
           <NumberInput id='monthlyIncome' label='Ежемесячный доход (BYN)' min='1' error={errors.monthlyIncome}/>
           <InvalidSelect id='invalid' label='Инвалидность *' error={errors.invalid}/>
           <CheckboxInput id='retiree' label='Пенсионер '/>
-          <button type='button' className='btn btn-light btn-form' onClick={this.onAdd}>Добавить</button>
+          <button type='button' className='btn btn-light form-button' onClick={this.onAdd}>Добавить</button>
         </form>
       </div>
     );
@@ -70,9 +70,6 @@ class ClientForm extends React.Component {
   }
 
   onAdd() {
-    //TODO:
-    // текст ошибки красным цветом + красный бордер поля
-
     const client = {};
     setFieldsFromInput(client, listOfInputs);
     setFieldsFromSelect(client, listOfSelects);
@@ -81,6 +78,13 @@ class ClientForm extends React.Component {
     client.retiree = !!document.getElementById('retiree').checked;
 
     let valid = validate(client, this.props.setValidation);
+
+    if (!valid) {
+      window.scrollTo({
+        top: 100,
+        behavior: 'smooth'
+      });
+    }
 
     if (valid) {
       ClientForm.toggleForm();

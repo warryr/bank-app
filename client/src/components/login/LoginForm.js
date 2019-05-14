@@ -21,7 +21,7 @@ class LoginForm extends React.Component {
         <label htmlFor='password'>Пароль</label>
         <input id='password' type='password'/>
         <p id='serverError' hidden>Неправильное имя пользователя или пароль</p>
-        <button type='button' className='btn btn-light btn-form' onClick={this.onLogin}>Войти</button>
+        <button type='button' className='btn btn-light form-button' onClick={this.onLogin}>Войти</button>
       </form>
     );
   }

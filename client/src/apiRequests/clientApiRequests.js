@@ -67,7 +67,7 @@ export const deleteClient = (id, resolve, reject) => {
         if (response.status === 204) {
           resolve(id);
         } else {
-          reject('You tried to delete someone who doesn\'t exist!!');
+          reject(response);
         }
       }
     })

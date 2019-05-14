@@ -6,12 +6,14 @@ import { clientReducer } from './clientReducer';
 import { depositReducer } from './depositReducer';
 import { creditReducer } from './creditReducer';
 import { userReducer } from './userReducer';
+import { entriesReducer } from './entriesReducer';
 
 const reducer = combineReducers({
   client: clientReducer,
   deposit: depositReducer,
   credit: creditReducer,
-  user: userReducer
+  user: userReducer,
+  entries: entriesReducer,
 });
 
 const persistConfig = {

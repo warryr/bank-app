@@ -11,7 +11,7 @@ const getValidObject = fieldName => ({
 });
 
 export const requiredField = (value, fieldName, validator, ...args) => {
-  if (value === '') {                                             // || value === null || value === undefined
+  if (value === '' || value === null || value === undefined) {
     return getErrorObject(`Введите значение`, fieldName)
   }
   if (validator === undefined) {
@@ -33,6 +33,13 @@ export const numericFieldInt = (value, fieldName) => {
     return getErrorObject(`Введите целое положительное число`, fieldName)
   }
   return getValidObject(fieldName);
+};
+
+export const numericFieldAmount = (value, fieldName, minValue) => {
+  if (value >= minValue) {
+    return getValidObject(fieldName);
+  }
+  return getErrorObject(`Депозитный вклад должен быть не меньше, чем ${minValue}`, fieldName)
 };
 
 export const textFieldNamePattern = (value, fieldName) => {

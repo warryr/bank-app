@@ -21,10 +21,7 @@ export const getClientDeposits = (clientId, resolve, reject) => {
     .then(response => {
       if (!tokenExpired(response)) {
         if(response.status === 200) {
-          response.json().then(deposits => {
-            console.log(deposits);
-            resolve(deposits)
-          })
+          response.json().then(deposits => resolve(deposits))
         } else {
           reject(response);
         }
@@ -48,6 +45,27 @@ export const addDeposit = (deposit, resolve, reject) => {
     if (!tokenExpired(response)) {
       if (response.status === 200) {
         response.json().then(newDeposit => resolve(newDeposit));
+      } else {
+        reject(response);
+      }
+    }
+  })
+    .catch(error => {
+      console.log(error.message);
+    });
+};
+
+export const endDeposit = (depositId, resolve, reject) => {
+  fetch(`/api/deposits/${depositId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${getToken()}`
+    },
+  }).then(response => {
+    if (!tokenExpired(response)) {
+      if (response.status === 200) {
+        response.json().then(resolve());
       } else {
         reject(response);
       }

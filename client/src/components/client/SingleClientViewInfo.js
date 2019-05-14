@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import DepositsViewInfo from '../deposit/DepositsViewInfo';
-import CreditsViewInfo from '../credit/CreditsViewInfo';
 
 const TableItem = ({ label, fieldValue }) => (
   <tr>
@@ -13,9 +12,9 @@ const TableItem = ({ label, fieldValue }) => (
 export default class SingleClientViewInfo extends React.Component {
   render() {
     return (
-    <div className='view-info'>
-      <h5>Информация о клиенте</h5>
-      <table className='client'>
+    <div className='view-info left'>
+      <h5 className='info-title left'>Информация о клиенте</h5>
+      <table className='client center'>
         <tbody>
         <TableItem label='Имя: ' fieldValue={this.props.currentClient.firstName}/>
         <TableItem label='Фамилия: ' fieldValue={this.props.currentClient.lastName}/>
@@ -42,11 +41,11 @@ export default class SingleClientViewInfo extends React.Component {
         <TableItem label='Пенсионер: ' fieldValue={this.props.currentClient.retiree ? 'да' : 'нет'}/>
         </tbody>
       </table>
-      <button className='btn btn-light' onClick={this.props.update}>Редактировать</button>
-      <Link className='btn btn-light' to={`/clients/${this.props.currentClient.id}/createDeposit`}>Оформить депозит</Link>
-      <Link className='btn btn-light' to={`/clients/${this.props.currentClient.id}/createCredit`}>Оформить кредит</Link>
+      <button className='btn btn-light left simple-button' onClick={this.props.update}
+              style={{margin: '20px 40px'}}>Редактировать</button>
+      <Link className='btn btn-light left simple-button' to={`/clients/${this.props.currentClient.id}/createDeposit`}
+            style={{margin: '20px'}}>Оформить депозит</Link>
       <DepositsViewInfo/>
-      <CreditsViewInfo/>
     </div>
     );
   }

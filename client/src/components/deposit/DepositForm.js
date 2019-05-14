@@ -2,10 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NumberInput, Select, TextInput} from '../common/StatelessComponents';
 import LoggedOutRedirector from './../common/LoggedOutRedirector';
-import $ from "jquery";
-import { depositActions } from "../../reducers/depositReducer";
-import validate from "../client/clientValidator";
-import { addDeposit } from "../../apiRequests/depositApiRequests";
+import $ from 'jquery';
+import { depositActions } from '../../reducers/depositReducer';
+import validate from './depositValidator';
+import { addDeposit } from '../../apiRequests/depositApiRequests';
+import { yyyymmdd, sumDigits } from '../../util/convertationUtil';
+
+Date.prototype.yyyymmdd = yyyymmdd;
 
 const depositTypes = ['Депозитный вклад до востребования', 'Депозитный срочный вклад с выплатой процентов'];
 const depositCurrencies = ['BYN', 'RUB', 'USD', 'EUR'];
@@ -63,11 +66,14 @@ class DepositForm extends React.Component {
                   onChange={this.updateIfHasTerm}/>
           <Select id='depositCurrency' label='Валюта депозита' options={depositCurrencies}
                   onChange={this.updateIfCurrency}/>
-          <Select id='depositTerm' label='Срок депозита (месяцев)' options={this.state.depositTerms}
-                  value={this.state.selectedTerm}
-                  onChange={e => this.setState({selectedTerm: e.target.value})}/>
+          <div className={this.state.depositHasTerm ? '' : 'hidden'}>
+            <Select id='depositTerm' label='Срок депозита (месяцев)' options={this.state.depositTerms}
+                    value={this.state.selectedTerm}
+                    onChange={e => this.setState({selectedTerm: e.target.value})}/>
+          </div>
           <TextInput id='depositPercent' label='Процент по депозиту' value={this.state.depositPercent} readOnly/>
-          <NumberInput id='depositAmount' label='Сумма депозита'/>
+          <TextInput id='depositStartDate' label='Дата начала депозитной программы' error={this.props.errors.depositStartDate}/>
+          <NumberInput id='depositAmount' label='Сумма депозита' error={this.props.errors.depositAmount}/>
           <button type='button' className='btn btn-light' onClick={this.onAdd}>Оформить</button>
         </form>
       </div>
@@ -81,7 +87,11 @@ class DepositForm extends React.Component {
     this.setPercentValue();
   }
 
-  componentDidMount = this.toggleTermSelect;
+  componentDidMount = () => {
+    document.getElementById('depositStartDate').flatpickr();
+    this.toggleTermSelect();
+  };
+
   componentDidUpdate = (prevProps, prevState) => {
     if (prevState.selectedTerm !== this.state.selectedTerm ||
         prevState.selectedCurrency !== this.state.selectedCurrency ||
@@ -153,22 +163,52 @@ class DepositForm extends React.Component {
       depositCurrency: this.state.selectedCurrency,
       depositTerm: this.state.selectedTerm,
       depositPercent: this.state.depositPercent,
-      depositAmount
+      depositAmount,
+      depositStatus: true,
     };
 
-    let valid = true; //validate(deposit, this.props.setValidation);
+    const dateParts = $('#depositStartDate').val().split('-');
+    let startDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], 3, 0, 0, 0);
+    deposit.depositStartDate = startDate.yyyymmdd();
+
+    let endDate;
+    if (this.state.selectedTerm !== '') {
+      endDate = new Date(startDate.setMonth(startDate.getMonth() + parseInt(this.state.selectedTerm)));
+      endDate = endDate.yyyymmdd();
+    } else {
+      endDate = '';
+    }
+    deposit.depositEndDate = endDate;
+
+    let clientCode = parseInt(deposit.clientId, 16) % 10000;
+    let generated = (Math.random() + '').replace('0.', '').slice(0,3);
+    let account = '30141' + generated + clientCode;
+    account += sumDigits(account);
+    let percentAccount = '30142' + generated + clientCode;
+    percentAccount += sumDigits(percentAccount);
+
+    deposit.depositAccount = account;
+    deposit.depositPercentAccount = percentAccount;
+
+    let valid = validate(deposit, this.props.setValidation);
 
     if (valid) {
-      $('form').find('input, select').val('');
+      $('form').find('#depositAmount, #depositStartDate').val('');
 
-      addDeposit(deposit, this.props.addDeposit, error => console.log(error));
+      deposit.depositAmount = parseInt(deposit.depositAmount);
+
+      addDeposit(deposit,
+          deposit => {
+            this.props.addDeposit(deposit);
+            this.props.history.push(`/clients/${this.props.match.params.id}`)
+          },
+          error => console.log(error));
     }
-
   }
 }
 
 const mapStateToProps = state => ({
-
+  errors: state.deposit.validation.errors || {},
 });
 
 const mapDispatchToProps = dispatch => ({

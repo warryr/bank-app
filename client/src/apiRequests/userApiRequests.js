@@ -1,5 +1,4 @@
 export const login = (user, resolve, reject) => {
-  console.log(user);
   return fetch(`/api/users/login`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},

@@ -22,8 +22,6 @@ const initializeRouter = (db) => {
         }
       }
     ]).toArray((err, doc) => {
-      console.log(err);
-      console.log(doc);
       if(err || doc.length === 0) {
         res.status(403);
         res.send();

@@ -11,7 +11,7 @@ const ClientTableHead = () => (
     <th>Имя</th>
     <th>Фамилия</th>
     <th>Отчество</th>
-    <th>Действия</th>
+    <th></th>
   </tr>
 );
 

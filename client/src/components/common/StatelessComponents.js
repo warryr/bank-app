@@ -4,7 +4,7 @@ export const Input = ({ id, label, type, error, ...args }) => (
   <div>
     <label htmlFor={id}>{label}</label>
     <input id={id} type={type} {...args}/>
-    <p>{error}</p>
+    <p style={{color: 'red'}}>{error}</p>
   </div>
 );
 
@@ -16,6 +16,7 @@ export const Select = ({ id, label, options, ...args }) => (
         <option key={key}>{option}</option>
       )}
     </select>
+    <p></p>
   </div>
 );
 
@@ -23,7 +24,7 @@ export const TableInput = ({ id, label, type, error, defaultVal }) => (
   <tr>
     <td>{label}</td>
     <td><input id={id} type={type} defaultValue={defaultVal}/></td>
-    <td>{error}</td>
+    <td style={{color: 'red'}}>{error}</td>
   </tr>
 );
 
@@ -35,7 +36,7 @@ export const TableSelect = ({ id, label, options, error }) => (
         <option key={key}>{option}</option>
       )}
     </select></td>
-    <td>{error}</td>
+    <td style={{color: 'red'}}>{error}</td>
   </tr>
 );
 

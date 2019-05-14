@@ -75,8 +75,8 @@ class SingleClientUpdateInfo extends React.Component {
         <CheckboxTableInput id='retireeUpdated' label='Пенсионер: *'/>
         </tbody>
       </table>
-      <button className='btn btn-light btn-form' onClick={this.onCancel}>Отменить</button>
-      <button className='btn btn-light btn-form' onClick={this.onSave}>Сохранить</button>
+      <button className='btn btn-light form-button' onClick={this.onCancel}>Отменить</button>
+      <button className='btn btn-light form-button' onClick={this.onSave}>Сохранить</button>
     </div>
     );
   }
@@ -110,7 +110,16 @@ class SingleClientUpdateInfo extends React.Component {
 
     let valid = validate(client, this.props.setValidation);
 
+    if (!valid) {
+      window.scrollTo({
+        top: 20,
+        behavior: 'smooth'
+      });
+    }
+
     if (valid) {
+      client.monthlyIncome = parseInt(client.monthlyIncome);
+
       updateClient(client, this.props.currentClient.id,
         (updatedClient) => {
           this.props.updateCurrentClient(updatedClient);

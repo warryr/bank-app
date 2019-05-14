@@ -1,7 +1,5 @@
 import decorator from '../util/logger';
 
-//TODO: validation for login and password
-
 export const userActions = {
   LOG_IN: 'LOG_IN',
   LOG_OUT: 'LOG_OUT',

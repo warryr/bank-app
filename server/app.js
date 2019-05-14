@@ -6,13 +6,15 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-const CONNECTION_URL = "mongodb+srv://admin:1tA8UqY8PNuWiao8@bankapp-mkqzv.mongodb.net/test?retryWrites=true";
+const CONNECTION_URL = "mongodb://localhost:27017/bank-app-db?retryWrites=true";
+// const CONNECTION_URL = "mongodb+srv://admin:1tA8UqY8PNuWiao8@bankapp-mkqzv.mongodb.net/test?retryWrites=true";
 const DATABASE_NAME = "bank-app-db";
 
 const indexRouter = require('./routes/index');
 const clientsRouterInitializer = require('./routes/clients');
 const usersRouterInitializer = require('./routes/users');
 const depositsRouterInitializer = require('./routes/deposits');
+const entriesRouterInitializer = require('./routes/entries');
 
 const app = express();
 let database;
@@ -45,6 +47,7 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
   app.use('/api/clients', clientsRouterInitializer(database));
   app.use('/api/users', usersRouterInitializer(database));
   app.use('/api/deposits', depositsRouterInitializer(database));
+  app.use('/api/entries', entriesRouterInitializer(database));
 
 // catch 404 and forward to error handler
   app.use(function(req, res, next) {
