@@ -19,7 +19,7 @@ const getFundSaldo = async (db) => {
   return db.collection('accounts').aggregate([
     {
       $match: {
-        _id: ObjectId('5cd3e5e076b9a1175c1c3a1c')
+        _id: ObjectId('5cdb1c72eb61cc3ce89133d7')
       }
     },
     {
